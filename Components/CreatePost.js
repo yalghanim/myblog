@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Form, Item, Input, Button, Text, Radio } from 'native-base';
+import { Container, Form, Item, Input, Button, Text } from 'native-base';
 import { observer } from "mobx-react";
 import auth from './auth';
 import Spinner from './Spinner';
 import myStore from './Store';
+import { CheckBox } from 'react-native-elements';
 
 
 
@@ -31,6 +32,9 @@ export default observer(class myLogin extends Component {
     self.setState({loading: true}); }, 1200);
   }
 
+  DraftControl() {
+    this.setState({ draft: !this.state.draft })
+  }
 
   render() {
     if (!this.state.loading) {
@@ -45,7 +49,7 @@ export default observer(class myLogin extends Component {
     )
   } else {
   return (
-    <Container>
+    <Container style={{alignSelf: 'stretch'}}>
     <Text style={{ color: 'red'}}> Create a blog post {"\n"} </Text>
       <Form>
         <Item>
@@ -58,7 +62,10 @@ export default observer(class myLogin extends Component {
           <Input autoCapitalize="sentences" label='postcontent' placeholder='content' value={this.state.postcontent} onChangeText={text => this.setState({ content: text })} style={{fontFamily: "Gill Sans"}} />
         </Item>
         <Item>
-          <Radio selected={this.state.draft} />
+        <CheckBox
+        title='Draft'
+        checked={this.state.draft}
+        onIconPress={this.DraftControl.bind(this)} />
         </Item>
         <Button
         onPress={this.ButtonPress.bind(this)}

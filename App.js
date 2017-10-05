@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from "mobx-react";
 import { View } from 'react-native';
-import { StyleSheet } from 'react-native';
 import { Container, Text } from 'native-base';
 import BlogHeader from './Components/Header'
 import MyContent from './Components/Content'

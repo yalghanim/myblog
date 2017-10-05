@@ -3,9 +3,12 @@ import { Header, Left, Body, Right, Button, Icon, Title, Text } from 'native-bas
 import auth from './auth';
 import {observer} from 'mobx-react';
 
+
 export default observer( class BlogHeader extends Component {
   render() {
     return (
+
+
         <Header>
           <Left>
             <Button transparent>

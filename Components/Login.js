@@ -3,8 +3,6 @@ import { Container, Form, Item, Input, Button, Text, Image, Badge } from 'native
 import { observer } from "mobx-react";
 import auth from './auth';
 
-
-
 export default observer(class myLogin extends Component {
   constructor(props) {
     super(props);
@@ -31,11 +29,9 @@ export default observer(class myLogin extends Component {
   render() {
     return (
       <Container>
-      <Badge info style={{ alignItems: 'center' }}>
-        <Text style={{ fontFamily: "Gill Sans" }}> Login Page {"\n"} </Text>
-      </Badge>
+        <Text> Login Page {"\n"} </Text>
         <Form>
-          <Item>
+          <Item >
             <Input autoCapitalize="none" label='user' placeholder='user' value={this.state.username} onChangeText={text => this.setState({ username: text })} style={{fontFamily: "Gill Sans"}} />
           </Item>
           <Item>
@@ -46,7 +42,6 @@ export default observer(class myLogin extends Component {
           full Info><Text style={{fontFamily: "Gill Sans"}}>Log In</Text></Button>
         </Form>
       </Container>
-
 
     );
   }

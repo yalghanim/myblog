@@ -6,12 +6,14 @@ import { NativeRouter, Route, Link, Redirect } from 'react-router-native';
 import BlogList from './BlogList';
 import Login from './Login';
 import CreatePost from './CreatePost';
+// import { ImageBackground, Dimensions, StyleSheet } from 'react-native';
 
 
 export default observer(class MyContent extends Component {
 render() {
   return (
       <NativeRouter>
+
       <Container>
         <Content>
         <Route exact path="/" render={ () => ( myStore.authenticated ? (
@@ -23,6 +25,7 @@ render() {
         <Route path="/z" render={ () => <CreatePost store={myStore} />} />
 
         </Content>
+
 
           <Footer>
            <FooterTab>
@@ -42,10 +45,24 @@ render() {
                </Link>
              </Button>
            </FooterTab>
-         </Footer>
-
-         </Container>
+          </Footer>
+          </Container>
         </NativeRouter>
   )
-} 
+}
 })
+
+// <ImageBackground
+//   source={{uri: 'https://static1.squarespace.com/static/5525bbf5e4b026f75314c09b/t/5535055ee4b0f20e2b62ace7/1429538153345/blog.jpg?format=1500w'}}
+//   style={styles.backgroundImage}
+// >
+//
+// const styles = StyleSheet.create({
+//   backgroundImage: {
+//     flex: 1,
+//     width: Dimensions.get('window').width,
+//     height: Dimensions.get('window').height,
+//     justifyContent: 'center',
+//     opacity: 0.9,
+//   },
+// })
