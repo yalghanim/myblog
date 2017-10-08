@@ -20,11 +20,48 @@ export default observer(class myLogin extends Component {
       };
   }
 
+  // ButtonPress(e){
+  //   this.createPost(title,author,postcontent,draft)
+  // }
 
 
-  ButtonPress(e){
-    console.log("pressed")
-  }
+
+
+  createPost(e){
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if(dd<10){
+        dd='0'+dd;
+    }
+    if(mm<10){
+        mm='0'+mm;
+    }
+    var today = yyyy+'-'+mm+'-'+dd;
+
+     fetch("http://139.59.119.40/api/create/",{
+      method: 'POST',
+      headers: {
+        'Accept':'application/json',
+        'Content-Type':'application/json',
+        'Authorization':'JWT ' + myStore.token,
+      },
+      body: JSON.stringify({
+        "title": this.state.title,
+        "content": this.state.postcontent,
+        "draft": this.state.draft,
+        "publish": today
+      })}
+
+    ).then((res)=> res.json())
+    .then((res)=>  {
+        console.log(res)
+      }).catch((error)=> console.log(error)).done();
+
+    }
+
 
   componentDidMount() {
   var self = this;
@@ -59,7 +96,7 @@ export default observer(class myLogin extends Component {
           <Input disabled label='author' placeholder={this.state.author} value={this.state.author} style={{fontFamily: "Gill Sans"}} />
         </Item>
         <Item>
-          <Input autoCapitalize="sentences" label='postcontent' placeholder='content' value={this.state.postcontent} onChangeText={text => this.setState({ content: text })} style={{fontFamily: "Gill Sans"}} />
+          <Input autoCapitalize="sentences" label='postcontent' placeholder='content' value={this.state.postcontent} onChangeText={text => this.setState({ postcontent: text })} style={{fontFamily: "Gill Sans"}} />
         </Item>
         <Item>
         <CheckBox
@@ -68,7 +105,7 @@ export default observer(class myLogin extends Component {
         onIconPress={this.DraftControl.bind(this)} />
         </Item>
         <Button
-        onPress={this.ButtonPress.bind(this)}
+        onPress={this.createPost.bind(this)}
         full primary><Text style={{fontFamily: "Gill Sans"}}>Create</Text></Button>
       </Form>
     </Container>
