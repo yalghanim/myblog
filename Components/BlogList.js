@@ -4,18 +4,22 @@ import { Card, CardItem, Body, Left, Thumbnail } from 'native-base';
 import { ListView, Image } from 'react-native';
 import myStore from './Store';
 import {observer} from 'mobx-react';
+import EditPost from './EditPost';
 
 export default observer(class BlogList extends Component {
   constructor(props){
     super(props);
     this.state = {
       url: "http://139.59.119.40/api/list/?format=json",
+      editMode: false,
+      object: this.object,
       dataSource: new ListView.DataSource({
         rowHasChanged:(row1, row2) => row1 !== row2,
       }),
       pagination: "",
       paginationprevious: "",
     }
+    this.EditMode = this.EditMode.bind(this);
   }
 
   componentWillMount(){
@@ -48,15 +52,24 @@ export default observer(class BlogList extends Component {
         this.fetchdata()
       }
 
+      EditMode(object) {
+          this.setState({
+          object: object,
+        })
+        myStore.editMode = true
+      }
+
+
+
 renderItem(object){
   return(
     <ListItem>
       <Card>
             <CardItem>
               <Left>
-              <Button success>
+              <Button success onPress={() => this.EditMode(object)}>
                 <Text style={{fontFamily: "Gill Sans"}}>{object.id}</Text>
-               </Button>
+                </Button>
                 <Body>
                   <Text style={{fontFamily: "Gill Sans"}}>{object.title}</Text>
                   <Text note style={{fontFamily: "Gill Sans"}}>{object.publish}</Text>
@@ -70,12 +83,13 @@ renderItem(object){
             </CardItem>
           </Card>
     </ListItem>
-  )
-
+  );
 }
 
+
+
   render() {
-    if (myStore.authenticated) {
+    if (myStore.authenticated && !myStore.editMode) {
     return (
       <Container>
 
@@ -86,7 +100,7 @@ renderItem(object){
       <List>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={this.renderItem}
+          renderRow={this.renderItem.bind(this)}
         />
       </List>
 
@@ -107,6 +121,10 @@ renderItem(object){
       </Fab>
 
       </Container>
+    );
+  } else if (myStore.authenticated && myStore.editMode) {
+    return(
+      <EditPost object={this.state.object.detail}/>
     );
   } else {
     return (

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Container, Form, Item, Input, Button, Text } from 'native-base';
 import { observer } from "mobx-react";
-import auth from './auth';
 import Spinner from './Spinner';
 import myStore from './Store';
 import { CheckBox } from 'react-native-elements';
 
 
 
-export default observer(class myLogin extends Component {
+export default observer(class CreatePost extends Component {
   constructor(props) {
     super(props);
     this.state = {

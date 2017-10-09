@@ -6,6 +6,8 @@ class myStore {
         authenticated: false,
         username: "",
         token: "",
+        editMode: false,
+        alert: 0,
       }
     )
   }
