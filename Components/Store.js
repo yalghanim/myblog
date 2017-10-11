@@ -8,6 +8,7 @@ class myStore {
         token: "",
         editMode: false,
         alert: 0,
+        detailMode: false,
       }
     )
   }

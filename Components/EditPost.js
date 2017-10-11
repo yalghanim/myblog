@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Form, Item, Input, Button, Text } from 'native-base';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import { observer } from "mobx-react";
 import myStore from './Store';
 import { CheckBox } from 'react-native-elements';
@@ -20,9 +20,8 @@ export default observer(class EditPost extends Component {
       author: myStore.username,
       draft: false,
       comments: [],
+      postauthor: "",
       };
-      // this.DeletePost = () => this.DeletePost();
-      this.DeletePost = this.DeletePost.bind(this);
   }
 
   updatePost(e){
@@ -68,12 +67,12 @@ export default observer(class EditPost extends Component {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
+        console.log(response.author.username);
         this.setState({object: response,
           slug: response.slug, title: response.title,
-          draft: response.draft, postcontent: response.content, comments: response.comments})
+          draft: response.draft, postcontent: response.content, comments: response.comments, postauthor: response.author.username})
       })
       .catch((error) => console.log(error)).done();
-      console.log(this.state.comments);
     }
 
   DraftControl() {
@@ -86,7 +85,7 @@ export default observer(class EditPost extends Component {
     'Delete' + ' post #' + this.state.object.id,
     'Are you sure you want to delete?',
       [
-    {text: 'Delete', onPress: () => {this.DeletePost}},
+    {text: 'Delete', onPress: () => this.DeletePost(e)},
     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
       ]
     )
@@ -94,7 +93,7 @@ export default observer(class EditPost extends Component {
 
     DeletePost(e){
       console.log(myStore.alert);
-      fetch("http://139.59.119.40/api/update/"+this.state.object.slug+"/",{
+      fetch("http://139.59.119.40/api/delete/"+this.state.object.slug+"/",{
       method: 'DELETE',
       headers: {
         'Accept':'application/json',
@@ -108,9 +107,10 @@ export default observer(class EditPost extends Component {
         myStore.editMode = false
         myStore.modal = 0
         console.log(myStore.alert)
+        this.props.updateView
+
       }).catch((error)=> console.log(error)).done();
     }
-
 
   render() {
   return (
@@ -135,9 +135,10 @@ export default observer(class EditPost extends Component {
         <Button
         onPress={this.updatePost.bind(this)}
         full primary><Text style={{fontFamily: "Gill Sans"}}>Submit Edit</Text></Button>
-        <Button
+        {this.state.author === this.state.postauthor ? <Button
         onPress={this.AlertPost.bind(this)}
-        full danger><Text style={{fontFamily: "Gill Sans"}}>Delete</Text></Button>
+        full danger><Text style={{fontFamily: "Gill Sans"}}>Delete</Text></Button>:<View />}
+
       </Form>
     </Container>
   )

@@ -5,6 +5,7 @@ import { ListView, Image } from 'react-native';
 import myStore from './Store';
 import {observer} from 'mobx-react';
 import EditPost from './EditPost';
+import BlogDetail from './BlogDetail';
 
 export default observer(class BlogList extends Component {
   constructor(props){
@@ -59,7 +60,13 @@ export default observer(class BlogList extends Component {
         myStore.editMode = true
       }
 
-
+      DetailMode(object) {
+          this.setState({
+          object: object,
+        })
+        myStore.detailMode = true;
+        console.log(myStore.detailMode);
+      }
 
 renderItem(object){
   return(
@@ -67,7 +74,7 @@ renderItem(object){
       <Card>
             <CardItem>
               <Left>
-              <Button success onPress={() => this.EditMode(object)}>
+              <Button success onPress={() => this.DetailMode(object)}>
                 <Text style={{fontFamily: "Gill Sans"}}>{object.id}</Text>
                 </Button>
                 <Body>
@@ -78,8 +85,13 @@ renderItem(object){
             </CardItem>
             <CardItem cardBody>
             <Text style={{fontFamily: "Gill Sans"}}>
-             {object.detail}
+             {"\t"}{object.detail} {"\n"}
              </Text>
+            </CardItem>
+            <CardItem footer style={{justifyContent: 'center'}}>
+            <Button full warning onPress={() => this.EditMode(object)}>
+              <Text style={{fontFamily: "Gill Sans"}}>Edit Post</Text>
+              </Button>
             </CardItem>
           </Card>
     </ListItem>
@@ -89,7 +101,7 @@ renderItem(object){
 
 
   render() {
-    if (myStore.authenticated && !myStore.editMode) {
+    if (myStore.authenticated && !myStore.editMode && !myStore.detailMode) {
     return (
       <Container>
 
@@ -124,9 +136,14 @@ renderItem(object){
     );
   } else if (myStore.authenticated && myStore.editMode) {
     return(
-      <EditPost object={this.state.object.detail}/>
+      <EditPost object={this.state.object.detail} updateView={this.fetchdata()}/>
     );
-  } else {
+  } else if (myStore.authenticated && myStore.detailMode && !myStore.editMode) {
+    return(
+      <BlogDetail object={this.state.object.detail} updateView={this.fetchdata()}/>
+    );
+  }
+  else {
     return (
       <Container>
       <Text style={{fontFamily: "Gill Sans"}}>
